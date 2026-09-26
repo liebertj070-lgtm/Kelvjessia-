@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { Logo } from "@/components/Logo";
-import { AuthForm } from "@/components/AuthForm";
+import { AuthShell } from "@/components/AuthShell";
 
 const FEATURES = [
   "Live tracking on every trip",
@@ -37,22 +37,9 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Mobile header */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-brand-900 to-brand-700 px-6 pb-10 pt-8 md:hidden">
-        <Link href="/">
-          <Logo variant="light" />
-        </Link>
-        <h1 className="mt-8 text-3xl font-bold leading-tight text-white">
-          Create your account
-        </h1>
-      </div>
-
-      {/* Form */}
-      <div className="flex flex-1 items-start justify-center px-6 py-10 md:items-center md:px-16">
-        <Suspense fallback={null}>
-          <AuthForm />
-        </Suspense>
-      </div>
+      <Suspense fallback={null}>
+        <AuthShell />
+      </Suspense>
     </div>
   );
 }
