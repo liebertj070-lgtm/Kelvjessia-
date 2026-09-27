@@ -84,17 +84,21 @@ export function SelectRouteClient({
             </div>
           </div>
 
-          {/* Mobile: FROM chip + swap button */}
+          {/* Mobile: FROM chip / swap button / TO chip — mirrors desktop's
+              three-part row, just stacked instead of side-by-side. Used to
+              be a single hardcoded "From: Ilara-Epe" chip with no "To"
+              chip at all, so tapping swap correctly flipped the internal
+              direction but nothing on screen ever showed it. */}
           <div className="md:hidden">
             <div className="rounded-xl bg-brand-50 px-4 py-3.5">
               <div className="text-[11px] font-medium uppercase tracking-wide text-brand-700">
                 From
               </div>
               <div className="mt-1 text-[15px] font-semibold text-neutral-900">
-                {ORIGIN.full}
+                {reversed ? selected?.city ?? "Select destination" : ORIGIN.full}
               </div>
             </div>
-            <div className="mt-4 flex flex-col items-center gap-2">
+            <div className="my-2 flex justify-center">
               <button
                 type="button"
                 onClick={() => setReversed((r) => !r)}
@@ -103,9 +107,18 @@ export function SelectRouteClient({
               >
                 <SwapHorizIcon className="h-5 w-5" />
               </button>
-              <span className="text-sm font-medium text-neutral-700">
-                Swap direction
-              </span>
+            </div>
+            <div className="rounded-xl border border-neutral-200 px-4 py-3.5">
+              <div className="text-[11px] font-medium uppercase tracking-wide text-neutral-600">
+                To
+              </div>
+              <div
+                className={`mt-1 text-[15px] font-semibold ${
+                  selected ? "text-neutral-900" : "text-neutral-400"
+                }`}
+              >
+                {reversed ? ORIGIN.full : selected?.city ?? "Select destination"}
+              </div>
             </div>
           </div>
 
