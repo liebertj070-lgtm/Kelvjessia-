@@ -11,7 +11,6 @@ import { Stepper } from "@/components/flow/Stepper";
 import { FlowMobileHeader } from "@/components/flow/FlowMobileHeader";
 import { RouteChip } from "@/components/flow/RouteChip";
 import { SeatMap } from "@/components/flow/SeatMap";
-import { AddIcon, RemoveIcon } from "@/components/icons";
 
 const DATE_OPTIONS = [
   { day: "Wed", date: 16 },
@@ -48,7 +47,6 @@ export function BookSeatClient({
 
   const [dateIndex, setDateIndex] = useState(2); // Fri 18
   const [timeIndex, setTimeIndex] = useState(1); // 10:00 AM
-  const [passengers, setPassengers] = useState(2);
   const [selectedSeats, setSelectedSeats] = useState<string[]>(["B3", "B4"]);
   const [takenSeats, setTakenSeats] = useState<string[]>(MOCK_TAKEN_SEATS);
   const [loadingSeats, setLoadingSeats] = useState(isSupabaseConfigured);
@@ -110,7 +108,7 @@ export function BookSeatClient({
       to: destination.slug,
       direction,
       seats: selectedSeats,
-      passengers,
+      passengers: selectedSeats.length,
       day: DATE_OPTIONS[dateIndex].day,
       date,
       time,
@@ -212,29 +210,13 @@ export function BookSeatClient({
                   <h2 className="text-sm font-semibold text-neutral-900 md:text-base">
                     Passengers
                   </h2>
-                  <p className="mt-0.5 hidden text-xs text-neutral-500 md:block">
-                    Each passenger needs their own seat
+                  <p className="mt-0.5 text-xs text-neutral-500">
+                    Each passenger needs their own seat — select seats above
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setPassengers((p) => Math.max(1, p - 1))}
-                    className="grid h-8 w-8 place-items-center rounded-full border border-neutral-200 text-neutral-700"
-                  >
-                    <RemoveIcon className="h-4 w-4" />
-                  </button>
-                  <span className="w-4 text-center text-base font-bold text-neutral-900">
-                    {passengers}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setPassengers((p) => Math.min(6, p + 1))}
-                    className="grid h-8 w-8 place-items-center rounded-full bg-brand-600 text-white"
-                  >
-                    <AddIcon className="h-4 w-4" />
-                  </button>
-                </div>
+                <span className="text-base font-bold text-neutral-900">
+                  {selectedSeats.length || 0}
+                </span>
               </div>
             </div>
           </div>

@@ -30,15 +30,14 @@ export function AuthForm({
   const searchParams = useSearchParams();
   const returnTo = searchParams.get("returnTo");
 
-  // Supabase's confirmation link redirects the browser back here with
-  // ?verified=1 (see emailRedirectTo below) after establishing the
-  // session client-side from the link's own token — so by the time this
-  // param shows up, they're already signed in; this just shows the
-  // pop-up telling them so, once, on that first load.
-  const [verifiedNoticeShown, setVerifiedNoticeShown] = useState(false);
-  if (!verifiedNoticeShown && searchParams.get("verified") === "1" && notice !== "verified") {
-    setVerifiedNoticeShown(true);
-    setNotice("verified");
+  // /auth/callback exchanges Supabase's confirmation code for a real
+  // session, then lands back here with ?verified=1 — so by the time this
+  // shows up, they're genuinely signed in, not just told they are.
+  const [authNoticeShown, setAuthNoticeShown] = useState(false);
+  if (!authNoticeShown && (searchParams.get("verified") === "1" || searchParams.get("error") === "verification_failed")) {
+    setAuthNoticeShown(true);
+    if (searchParams.get("verified") === "1") setNotice("verified");
+    else setError("That verification link didn't work — it may have expired. Try signing up again.");
   }
 
   const canContinue = tab === "login" || agreed;
@@ -68,7 +67,7 @@ export function AuthForm({
           password,
           options: {
             data: { full_name: fullName },
-            emailRedirectTo: `${window.location.origin}/login?verified=1`,
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
           },
         });
         if (signUpError) throw signUpError;
