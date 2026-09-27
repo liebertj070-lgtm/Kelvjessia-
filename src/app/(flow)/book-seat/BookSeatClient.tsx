@@ -11,6 +11,7 @@ import { Stepper } from "@/components/flow/Stepper";
 import { FlowMobileHeader } from "@/components/flow/FlowMobileHeader";
 import { RouteChip } from "@/components/flow/RouteChip";
 import { SeatMap } from "@/components/flow/SeatMap";
+import { PersonIcon } from "@/components/icons";
 
 const DATE_OPTIONS = [
   { day: "Wed", date: 16 },
@@ -205,8 +206,8 @@ export function BookSeatClient({
             </div>
 
             <div className="rounded-2xl bg-white p-4 md:p-6">
-              <div className="flex items-center justify-between">
-                <div>
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
                   <h2 className="text-sm font-semibold text-neutral-900 md:text-base">
                     Passengers
                   </h2>
@@ -214,9 +215,12 @@ export function BookSeatClient({
                     Each passenger needs their own seat — select seats above
                   </p>
                 </div>
-                <span className="text-base font-bold text-neutral-900">
-                  {selectedSeats.length || 0}
-                </span>
+                <div className="flex shrink-0 items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1.5">
+                  <PersonIcon className="h-3.5 w-3.5 text-brand-600" />
+                  <span className="text-sm font-bold text-brand-700">
+                    {selectedSeats.length || 0}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
