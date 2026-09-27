@@ -9,6 +9,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getLatestActiveBooking } from "@/lib/supabase/queries";
 import { tripViewFromRow, type TripView } from "@/lib/trip";
 import { WHATSAPP_URL } from "@/lib/contact";
+import Link from "next/link";
+import { NotificationsIcon } from "@/components/icons";
 
 async function resolveFirstName(): Promise<string> {
   if (!isSupabaseConfigured) {
@@ -44,13 +46,28 @@ export default async function HomePage() {
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-8 md:px-10">
-      <div>
-        <h1 className="text-2xl font-bold text-neutral-900 md:text-h1">
-          {getGreeting()}, {firstName}
-        </h1>
-        <p className="mt-1 text-neutral-600">
-          Where are we taking you today?
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-neutral-900 md:text-h1">
+            {getGreeting()}, {firstName}
+          </h1>
+          <p className="mt-1 text-neutral-600">
+            Where are we taking you today?
+          </p>
+        </div>
+
+        {/* Mobile only — desktop already gets this from TopNav, which
+            renders on every (app) page. Home has no other persistent
+            header on mobile, so this was the one place notifications
+            had no entry point at all. */}
+        <Link
+          href="/notifications"
+          aria-label="Notifications"
+          className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full hover:bg-neutral-200/60 md:hidden"
+        >
+          <NotificationsIcon className="h-5 w-5 text-neutral-700" />
+          <span className="absolute right-2 top-2 h-[9px] w-[9px] rounded-full bg-brand-600 ring-2 ring-neutral-100" />
+        </Link>
       </div>
 
       <div className="mt-6">
